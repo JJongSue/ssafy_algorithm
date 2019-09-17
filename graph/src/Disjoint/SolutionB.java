@@ -77,6 +77,15 @@ public class SolutionB {
 					}
 				}
 			}
+			dis_map = new int[arr.size()][arr.size()];
+			for(int i=0;i<arr.size();i++)
+			{
+				for(int j=i+1;j<arr.size();j++)
+				{
+					
+				}
+			}
+			
 			
 			
 		}
