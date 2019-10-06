@@ -10,11 +10,12 @@ import java.util.StringTokenizer;
 public class Main3197 {
 	static final int dx[] = {0,-1,1,0};
 	static final int dy[] = {-1,0,0,1};
-	static char map[][];
-	static boolean is_visit[][];
 	static int N, M;
+	static char map[][];
+	/*static boolean is_visit[][];
+	static int N, M;*/
 	//얼음과 녹는 얼음, 퍼지는 L을 저장
-	static Queue<pair> ice, melt, LQ, saveLQ;
+	//static Queue<pair> ice, melt, LQ, saveLQ;
 	static pair searchL;
 	static class pair{
 		int x;
@@ -32,11 +33,11 @@ public class Main3197 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new char[N][M];
-		is_visit = new boolean[N][M];
-		ice = new LinkedList<pair>();
-		melt = new LinkedList<pair>();
-		LQ = new LinkedList<pair>();
-		saveLQ = new LinkedList<pair>();
+		boolean [][]is_visit = new boolean[N][M];
+		Queue<pair> ice = new LinkedList<pair>();
+		Queue<pair> melt = new LinkedList<pair>();
+		Queue<pair> LQ = new LinkedList<pair>();
+		Queue<pair> saveLQ = new LinkedList<pair>();
 		for(int i=0;i<N;i++) {
 			map[i] = br.readLine().toCharArray();
 			for(int j=0;j<M;j++) {
