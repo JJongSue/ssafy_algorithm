@@ -30,6 +30,7 @@ public class Main1325 {
 		boolean [] is_visit;
 		int arr[] = new int[N+1];
 		int max = -1;
+		Queue<Integer> qq = new LinkedList<>();
 		for(int i=1;i<=N;i++) {
 			is_visit = new boolean[N+1];
 			is_visit[i] = true;
@@ -45,13 +46,22 @@ public class Main1325 {
 					}
 				}
 			}
-			if(max < arr[i]) max = arr[i];
+			if(max < arr[i]) {
+				qq.clear();
+				qq.add(i);
+				max = arr[i];
+			}else if(max == arr[i]) {
+				qq.add(i);
+			}
 		}
 		StringBuilder sb = new StringBuilder();
-		for(int i=1;i<=N;i++) {
+		/*for(int i=1;i<=N;i++) {
 			if(arr[i] == max) {
 				sb.append(i).append(" ");
 			}
+		}*/
+		while(!qq.isEmpty()) {
+			sb.append(qq.poll()).append(" ");
 		}
 		System.out.println(sb);
 		
