@@ -18,9 +18,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Solution5643 {
+public class Solution5643_2 {
 	static boolean[] is_visit;
 	static final int inf = 987654321;
 	static int[][] arr;
@@ -34,37 +36,59 @@ public class Solution5643 {
 			N = Integer.parseInt(br.readLine().trim());
 			M = Integer.parseInt(br.readLine().trim());			
 			
-			arr = new int[N+1][N+1];
+			arr = new int[N+1][N+1];			
 			
-			for(int i=1;i<=N;i++) {
-				for(int j=1;j<=N;j++) {
-					if(i == j) arr[i][j] = 0;
-					arr[i][j] = inf;
-				}
-			}
 			
 			for(int i=0;i<M;i++) {
 				st = new StringTokenizer(br.readLine());				
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
 				arr[a][b] = 1;
+				arr[b][a] = -1;
 			}
-			for(int i=1;i<=N;i++) {
-				for(int j=1;j<=N;j++) {
-					if(i == j) continue;
-					for(int k=1;k<=N;k++) {
-						arr[i][j] = Math.min(arr[i][j], arr[i][k]+arr[k][j]);
-					}
-				}
-			}
+			Queue<Integer> q, q2;
 			int []cnt = new int[N+1];
-			int answer =0;
-			for(int i=1;i<=N;i++) {
+			for(int i=1;i<=N;i++) {				
+				is_visit = new boolean[N+1];
+				is_visit[i] = true;
+				q = new LinkedList<Integer>();
+				q2 = new LinkedList<Integer>();
 				for(int j=1;j<=N;j++) {
-					if(arr[i][j] < inf || arr[j][i] < inf) {
+					if(arr[i][j] == 1) {
+						q.add(j);
+						is_visit[j] = true;
 						cnt[i]++;
 					}
+					if(arr[i][j] == -1) {
+						q2.add(j);
+						is_visit[j] = true;
+						cnt[i]++;
+					}				
 				}
+				while(!q.isEmpty()) {
+					int tmp = q.poll();
+					for(int j=1;j<=N;j++) {
+						if(!is_visit[j] && arr[tmp][j] == 1) {
+							q.add(j);
+							cnt[i]++;
+							is_visit[j]=true;
+						}
+					}
+				}
+				while(!q2.isEmpty()) {
+					int tmp = q2.poll();
+					for(int j=1;j<=N;j++) {
+						if(!is_visit[j] && arr[tmp][j] == -1) {
+							q2.add(j);
+							cnt[i]++;
+							is_visit[j]=true;
+						}
+					}
+				}
+			}
+			
+			int answer =0;
+			for(int i=1;i<=N;i++) {				
 				if(cnt[i] == N-1) answer++;
 			}
 			//System.out.println(Arrays.toString(cnt));
