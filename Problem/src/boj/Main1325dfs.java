@@ -7,67 +7,76 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
-public class Main1325 {
+public class Main1325dfs {
 	static int N;
+	static boolean[] is_visit;
 	static ArrayList<ArrayList<Integer>> al;
-	static boolean [] is_visit;
-	static int[]arr;
+	static Vector<Integer> varr[];
+	static Vector<Vector<Integer>> v;
+	static int arr[];
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
-		al = new ArrayList<ArrayList<Integer>>();
+		v = new Vector<>();
+		//al = new ArrayList<ArrayList<Integer>>();
+		varr = new Vector[N+1];
 		for(int i=0;i<=N;i++) {
-			al.add(new ArrayList<>());
+			//al.add(new ArrayList<>());
+			varr[i] = new Vector<>();
 		}
+		
 		for(int i=0;i<M;i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			al.get(b).add(a);
+			varr[b].add(a);
+			//v.get(b).add(a);
+			//al.get(b).add(a);
 		}
 		
 
 		arr = new int[N+1];
 		int max = -1;
-		Queue<Integer> qq = new LinkedList<>();
+		StringBuilder sb=new StringBuilder();;
 		for(int i=1;i<=N;i++) {			
 			is_visit = new boolean[N+1];
 			is_visit[i] = true;
-			bfs(i, i);
+			dfs(i, i);
 			if(max < arr[i]) {
-				qq.clear();
-				qq.add(i);
+				sb = new StringBuilder();
+				sb.append(i).append(" ");
+				
 				max = arr[i];
 			}else if(max == arr[i]) {
-				qq.add(i);
+				//qq.add(i);
+				sb.append(i).append(" ");
 			}
 			
 		}
-		StringBuilder sb = new StringBuilder();
+		System.out.println(sb);
+		
 		/*for(int i=1;i<=N;i++) {
 			if(arr[i] == max) {
 				sb.append(i).append(" ");
 			}
-		}*/
-		while(!qq.isEmpty()) {
-			sb.append(qq.poll()).append(" ");
-		}
-		System.out.println(sb);
-		
+		}*/		
 		
 	}
-	static void bfs(int a, int b) {
-		for(int tmp : al.get(b)) {
+	static void dfs(int a, int b) {
+		for(int tmp : varr[b] ) {
 			if(!is_visit[tmp]) {
 				is_visit[tmp] = true;
-				bfs(a,tmp);
+				dfs(a,tmp);
 				arr[a]++;
 			}
 		}
-		
 	}
+	
+	
+	
 	
 }
