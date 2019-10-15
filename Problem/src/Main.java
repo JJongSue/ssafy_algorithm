@@ -1,93 +1,83 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-public class Main
-{
-	public static class Edges implements Comparable<Edges> {
-		int des;
-		int c;
-		public Edges(int des, int c) {
-			this.des = des;
-			this.c = c;
-		}
-		@Override
-		public int compareTo(Edges o)
-		{
-			// TODO Auto-generated method stub
-			return this.c-o.c;
-		}
-		
-	}
-	public static void main(String[] args) throws IOException
-	{
+public class Main {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		StringBuilder sb = new StringBuilder();
-		int V = Integer.parseInt(st.nextToken());
-		int E = Integer.parseInt(st.nextToken());
-		int start = Integer.parseInt(br.readLine());
-		boolean[] visited = new boolean[V+1];
-		int[] dist = new int[V+1];
-		ArrayList<Edges>[] list = new ArrayList[V+1];
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		boolean[] point = new boolean[N];
 		
-		for(int i=0; i<V+1; i++)
-			list[i]= new ArrayList<>();
+		st = new StringTokenizer(br.readLine());
+		point[] p = new point[N];
+		for(int i=0; i<N; i++) {
+			int sight = Integer.parseInt(st.nextToken());
+			if(sight==1)
+				point[i] = true;
+			p[i] = new point(new ArrayList<Integer>(), new HashMap<Integer, Integer>(), 0, i);
+		}
 		
-		for(int i=0; i<E; i++)
-		{
+		for(int i=0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
-			int a =  Integer.parseInt(st.nextToken());
-			int b =  Integer.parseInt(st.nextToken());
-			int c =  Integer.parseInt(st.nextToken());
-			list[a].add(new Edges(b, c));
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int t = Integer.parseInt(st.nextToken());
+			
+			if((a!=N-1 && b!=N-1) && (point[a] || point[b]))
+				continue;
+			p[a].nearlist.add(b);
+			p[a].time.put(b, t);
+			p[b].nearlist.add(a);
+			p[b].time.put(a, t);
 		}
 		
-		for(int i=0; i<list[start].size(); i++)
-		{
-			dist[list[start].get(i).des]=list[start].get(i).c;
-		}
+		int[] time = new int[N];
+		Arrays.fill(time, Integer.MAX_VALUE);
 		
-		for(int i=1; i<=V; i++)
-		{
-			if(dist[i]==0)
-			dist[i]=Integer.MAX_VALUE;
-		}
-		visited[start] = true;
-		dist[start] =0;
-		
-//		System.out.println(Arrays.toString(dist));
-		for(int i=0; i<V-1; i++)
-		{
-			int minDist=Integer.MAX_VALUE;
-			int minIdx =0 ;
-			for(int j=1; j<=V; j++)
-			{
-				if(!visited[j] && minDist > dist[j] && list[j].size()>0)
-				{
-					minDist = dist[j];
-					minIdx= j;
-				}
-				
-			}
-			for(int j=0; j<list[minIdx].size(); j++)
-			{
-				int n_des= list[minIdx].get(j).des;
-				if(!visited[n_des] && dist[n_des] > dist[minIdx] + list[minIdx].get(j).c)
-				{
-					dist[n_des] = dist[minIdx] + list[minIdx].get(j).c;
+		Queue<point> queue = new LinkedList<>();
+		queue.add(p[N-1]);
+		point pp;
+		while(!queue.isEmpty()) {
+			pp = queue.poll();
+			if(pp.curtime >= time[0])
+				continue;
+			if(pp.curtime > time[pp.idx])
+				continue;
+			for(int i : pp.nearlist) {
+				if(time[i] > pp.time.get(i) + pp.curtime) {
+					time[i] = pp.curtime + pp.time.get(i);
+					if(i==0)
+						continue;
+					queue.add(new point(p[i].nearlist, p[i].time, pp.curtime + pp.time.get(i), i));
 				}
 			}
-			visited[minIdx]= true;
 		}
-		for(int i=1; i<=V; i++)
-		{
-			if(dist[i]==Integer.MAX_VALUE)
-				sb.append("INF").append('\n');
-			else {
-				sb.append(dist[i]).append('\n');				
-			}
-		}
-		System.out.print(sb.toString());
+		if(time[0]==Integer.MAX_VALUE)
+			System.out.println(-1);
+		else
+			System.out.println(time[0]);
+		
+		//System.out.println(Integer.MAX_VALUE);
 	}
-	
+	static class point{
+		ArrayList<Integer> nearlist;
+		Map<Integer, Integer> time;
+		int curtime;
+		int idx;
+		public point(ArrayList<Integer> nearlist, Map<Integer, Integer> time, int curtime, int idx) {
+			this.nearlist = nearlist;
+			this.time = time;
+			this.curtime = curtime;
+			this.idx = idx;
+		}
+	}
 }
