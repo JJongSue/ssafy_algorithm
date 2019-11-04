@@ -43,6 +43,7 @@ public class Main10942 {
 				int iter = 0;
 				while(b-iter >= (a+b)/2){
 					is_ok = is_ok&map[a+iter][b-iter];
+					if(!is_ok) break;
 					iter++;
 				}
 				System.out.println(is_ok? 1:0);
