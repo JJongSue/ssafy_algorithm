@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 public class Main2174 {
 	//동 서 남 북
 	static final int dx[] = {0,1,0,-1};
-	static final int dy[] = {1,0,-1,0};
+	static final int dy[] = {-1,0,1,0};
 	static int N, M, Rcnt, Ccnt;
 	static ArrayList<robot> r2b2;
 	static class robot{
@@ -60,6 +60,7 @@ public class Main2174 {
 							if(find == a) continue;
 							if(r2b2.get(a).x+dx[r2b2.get(a).r] == r2b2.get(find).x && r2b2.get(a).y+dy[r2b2.get(a).r] == r2b2.get(find).y) {
 								System.out.println("Robot "+a+" crashes into robot "+find);
+								//System.out.println((r2b2.get(a).x+dx[r2b2.get(a).r])+ " " +(r2b2.get(a).y+dy[r2b2.get(a).r]));
 								is_end = true;
 								break end;
 							}
