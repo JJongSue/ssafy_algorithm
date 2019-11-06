@@ -162,7 +162,7 @@ public class Main1733 {
 				if(map[i][j] == 2 && !is_visit[i][j][3][1]) {
 					for(int x=j+1;x<19;x++) {
 						if(is_map(x, i-x+j) && map[i-x+j][x] == 2) {
-							is_visit[i][j-x+j][3][1] = true;
+							is_visit[i-x+j][x][3][1] = true;
 							cnt++;
 						}else break;
 					}
