@@ -9,30 +9,31 @@ class HashtableImpl implements Hashtable{
 	}
 	int capacity;
 	Hash ht[];
+	
 	public HashtableImpl(int capacity) {
-		super();
 		this.capacity = capacity;
 		ht = new Hash[capacity];
-		for(int i=0;i<capacity;i++) {
+		for(int i=0;i<capacity;i++)
 			ht[i] = new Hash();
-		}
 	}
 	@Override
 	public int hash(String str) {
 		int hash = 5381;
 		for(int i=0;i<str.length();i++) {
-			int c = str.charAt(i);
-			hash = (hash<<5) + hash + c;			
+			int c = (int)str.charAt(i);
+			hash = (hash<<5) + hash + c;
 		}
-		if(hash < 0 ) hash*=-1;
+		if(hash < 0) hash *= -1;
 		return hash%capacity;
 	}
 	@Override
 	public String find(String key) {
 		int cnt = capacity;
 		int h = hash(key);
-		while(ht[h].key != null && (--cnt) != 0) {
-			if(ht[h].key.equals(key)) return ht[h].data;
+		while( ht[h].key != null && (--cnt) != 0) {
+			if(ht[h].key.equals(key)) {
+				return ht[h].data;
+			}
 			h = (h+1)%capacity;
 		}
 		return null;
@@ -41,13 +42,17 @@ class HashtableImpl implements Hashtable{
 	public boolean add(String key, String data) {
 		int h = hash(key);
 		while(ht[h].key != null) {
-			if(ht[h].key.equals(key)) return false;
+			if(ht[h].key.equals(key)) {
+				return false;
+			}
 			h = (h+1)%capacity;
 		}
-		ht[h].key =key;
-		ht[h].data=data;		
+		ht[h].key= key;
+		ht[h].data=data;
+		
 		return true;
 	}
+	
 	
 	
 	
