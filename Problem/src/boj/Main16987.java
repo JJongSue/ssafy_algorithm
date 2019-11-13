@@ -32,54 +32,52 @@ public class Main16987 {
 			arr2[i] = arr[i];
 		}
 		bbb = new boolean[N][(1<<N)];
-		breakegg(0, arr2, new boolean[N], 0);
+		breakegg(0, arr2);
 		System.out.println(ans);
 		
 	}
 	
-	static void breakegg(int now, pair[] cp, boolean[] is_visit, int bb) {
+	static void breakegg(int now, pair[] cp) {
 		//System.out.println(now);
-		if(now == N) {
-			int tmp = 0;
+		if(now >= N) {
+			int cnt = 0;
 			for(int i=0;i<N;i++) {
-				if(cp[i].x <= 0) tmp++;
+				if(cp[i].x<=0) cnt++;
 			}
-			ans = Math.max(ans, tmp);
+			/*if(ans < cnt) {
+				for(int i=0;i<N;i++) {
+					if(cp[i].x<=0) System.out.print(i+" ");
+				}
+				System.out.println();
+				System.out.println(cnt);
+			}*/
+			ans = Math.max(ans, cnt);
 			return;
 		}
-		if(cp[now].x <= 0) {
-			breakegg(now+1, cp, new boolean[N],0);
+		if(cp[now].x<= 0) {
+			breakegg(now+1, cp);			
 			return;
-		}
-		int cnt = 0;
-		for(int i=now+1;i<N;i++) {
-			if(cp[i].x > 0) cnt++;
-		}
-		if(0 == cnt) {
-			breakegg(N, cp, is_visit,0);
-			return;
-		}
-		for(int i=now+1;i<N;i++) {
-			if(is_visit[i]) continue;
-			int tmp = bb | (1<<i);
-			if(bbb[now][tmp]) continue;
-			int nowx = cp[now].x;
-			int nowy = cp[now].y;
-			int desx = cp[i].x;
-			int desy = cp[i].y;
-			bbb[now][tmp] = true;
-			if(desx <= 0) continue;
-			
-			cp[i].x-=cp[now].y;
-			cp[now].x-=cp[i].y;
-			is_visit[i] = true;
-			breakegg(now, cp, is_visit, tmp);
-			cp[i].x=desx;
-			is_visit[i] = false;
-			cp[now].x=nowx;
-		}
-		breakegg(N, cp, is_visit, bb);
+		}		
 		
+		boolean  is_go = true;
+		for(int i=0;i<N;i++) {
+			if(i==now) continue;			
+			//System.out.println(now+" i : "+i);
+			if(cp[i].x <=0) {				
+				continue;
+			}
+			is_go = false;
+			int nowx = cp[now].x;
+			int iix = cp[i].x;
+			cp[now].x -= cp[i].y;
+			cp[i].x -= cp[now].y;
+			
+			breakegg(now+1, cp);
+			cp[now].x = nowx;
+			cp[i].x = iix;
+			
+		}
+		if(is_go) breakegg(now+1, cp);
 		
 		
 	}
