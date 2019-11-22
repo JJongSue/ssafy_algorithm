@@ -10,20 +10,37 @@ public class Main2602 {
 		char rig[] = br.readLine().toCharArray();
 		char one[] = br.readLine().toCharArray();
 		char two[] = br.readLine().toCharArray();
-		int oo[] = new int[one.length];
-		int tt[] = new int[one.length];
+		long oo[] = new long[rig.length];
+		long tt[] = new long[rig.length];
 		int N = one.length;
-		for(int i=0;i<N;i++) {
-			if(one[i] == rig[rig.length-1]) oo[i] = 1;
-			if(two[i] == rig[rig.length-1]) tt[i] = 1;
-		}
-		
-		
+		long tmpo = 0;
+		long tmpt = 0;
 		for(int i=N-1;i>=0;i--) {
-			for(int j=i+1;j<N;j++) {
-				if(one[i] )
+			long tmpoo = oo[0];
+			long tmptt = tt[0];			
+			
+			for(int j=0;j<rig.length-1;j++) {
+				if(one[i] == rig[j]) {					
+					oo[j] += tt[j+1];
+				}
+				if(two[i] == rig[j])
+				{
+					tt[j] += oo[j+1];				
+				}
 			}
+			if(one[i] == rig[rig.length-1]) {					
+				oo[rig.length-1] += (1);
+				
+			}
+			if(two[i] == rig[rig.length-1]) {					
+				tt[rig.length-1] += (1);
+			}			
+			
 		}
+		
+		
+		
+		System.out.println((oo[0]+tt[0]));
 		
 	}
 }
