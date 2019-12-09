@@ -1,5 +1,5 @@
 package algo;
 
-public class 우선순위큐impl {
+public class �슦�꽑�닚�쐞�걧impl {
 
 }
