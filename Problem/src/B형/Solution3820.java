@@ -29,17 +29,29 @@ public class Solution3820 {
 			queue[now] = x;
 			int tmp = now;
 			while(tmp > 0) {
-				if( queue[(tmp-1)/2].second > queue[tmp].second  ) {
+				int a = (queue[(tmp-1)/2].first+queue[(tmp-1)/2].second)*queue[tmp].first+queue[tmp].second;
+				int b = (queue[tmp].first+queue[tmp].second)* queue[(tmp-1)/2].first+queue[(tmp-1)/2].second;
+				if(queue[tmp].first == queue[(tmp-1)/2].first && queue[tmp].second < queue[(tmp-1)/2].second) {
 					pair tmpq = queue[(tmp-1)/2];
 					queue[(tmp-1)/2] = queue[tmp];
 					queue[tmp] = tmpq;
 					tmp = (tmp-1)/2;
-				}else if(queue[(tmp-1)/2].second == queue[tmp].second && queue[(tmp-1)/2].first < queue[tmp].first) {
+				}
+				else if(a>b || ( (a==b) && queue[tmp].second > queue[(tmp-1)/2].second )) {
+					
+				//if( a * queue[tmp].first+queue[tmp].second >  b * queue[(tmp-1)/2].first+queue[(tmp-1)/2].second ) {
+					pair tmpq = queue[(tmp-1)/2];
+					queue[(tmp-1)/2] = queue[tmp];
+					queue[tmp] = tmpq;
+					tmp = (tmp-1)/2;					
+				}				
+				
+				/*else if(queue[(tmp-1)/2].second == queue[tmp].second && queue[(tmp-1)/2].first < queue[tmp].first) {
 					pair tmpq = queue[(tmp-1)/2];
 					queue[(tmp-1)/2] = queue[tmp];
 					queue[tmp] = tmpq;
 					tmp = (tmp-1)/2;
-				}else break;
+				}*/else break;
 			}
 			now++;
 		}
@@ -49,17 +61,26 @@ public class Solution3820 {
 			queue[0] = queue[--now];
 			int tmp = 0;
 			while( tmp*2+1 < now ) {
-				if( queue[tmp*2+1].second < queue[tmp].second  ) {
+				
+				int a = (queue[tmp*2+1].first+queue[tmp*2+1].second)*queue[tmp].first+queue[tmp].second;
+				int b = (queue[tmp].first+queue[tmp].second)* queue[tmp*2+1].first+queue[tmp*2+1].second;
+				if(queue[tmp].first == queue[tmp*2+1].first && queue[tmp].second > queue[tmp*2+1].second) {
 					pair tmpq = queue[tmp*2+1];
 					queue[tmp*2+1] = queue[tmp];
 					queue[tmp] = tmpq;
 					tmp = tmp*2+1;
-				}else if(queue[tmp*2+1].second == queue[tmp].second && queue[tmp*2+1].first > queue[tmp].first) {
+				}				
+				else if( a < b || ((a==b) && queue[tmp].second > queue[tmp*2+1].second) ) {
 					pair tmpq = queue[tmp*2+1];
 					queue[tmp*2+1] = queue[tmp];
 					queue[tmp] = tmpq;
 					tmp = tmp*2+1;
-				}else break;
+				}/*else if(queue[tmp*2+1].second == queue[tmp].second && queue[tmp*2+1].first > queue[tmp].first) {
+					pair tmpq = queue[tmp*2+1];
+					queue[tmp*2+1] = queue[tmp];
+					queue[tmp] = tmpq;
+					tmp = tmp*2+1;
+				}*/else break;
 			}
 			return r;
 		}
@@ -81,6 +102,7 @@ public class Solution3820 {
 			long v = 1;
 			for(int i=0;i<N;i++) {
 				pair tmp = pq.poll();
+				System.out.println(tmp.first+" "+tmp.second);
 				v = (v*tmp.first+tmp.second)%1000000007;
 			}
 			System.out.println("#"+tc+" "+v);
