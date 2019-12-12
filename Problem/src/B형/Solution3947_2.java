@@ -13,10 +13,12 @@ public class Solution3947_2 {
 	static class road{
 		int x;
 		int dis;
-		public road(int x, int dis) {
+		int sum;
+		public road(int x, int dis, int sum) {
 			super();
 			this.x = x;
 			this.dis = dis;
+			this.sum = sum;
 		}		
 	}
 	
@@ -32,13 +34,16 @@ public class Solution3947_2 {
 			pq[now] = r;
 			int tmpnow = now;
 			while(tmpnow!=0) {
-				if(pq[(tmpnow-1)/2].dis > pq[tmpnow].dis ) {
+				if(pq[(tmpnow-1)/2].dis > pq[tmpnow].dis || 
+						(pq[(tmpnow-1)/2].dis == pq[tmpnow].dis && pq[(tmpnow-1)/2].sum > pq[tmpnow].sum)) {
 					road tmp = pq[(tmpnow-1)/2];
 					pq[(tmpnow-1)/2] = pq[tmpnow];
 					pq[tmpnow] = tmp;
 					
 					tmpnow = (tmpnow-1)/2;
-				}else break;
+				}else {
+					break;
+				}
 			}
 			now++;
 		}
@@ -49,10 +54,13 @@ public class Solution3947_2 {
 			int tmpnow = 0;
 			while(tmpnow*2+1<now) {
 				int child = tmpnow*2+1;
-				if(child+1 < now && pq[child].dis > pq[child+1].dis) {
+				if(child+1 < now && 
+						(pq[child].dis > pq[child+1].dis
+						|| (pq[child].dis == pq[child+1].dis && pq[child].sum > pq[child+1].sum) )) {
 					child++;
 				}
-				if(pq[child].dis < pq[tmpnow].dis) {
+				if(pq[child].dis < pq[tmpnow].dis ||
+						(pq[child].dis == pq[tmpnow].dis && pq[child].sum < pq[tmpnow].sum )) {
 					road tmp = pq[child];
 					pq[child] = pq[tmpnow];
 					pq[tmpnow] = tmp;
@@ -128,12 +136,12 @@ public class Solution3947_2 {
 				int x = Integer.parseInt(st.nextToken());
 				int y = Integer.parseInt(st.nextToken());
 				int dis = Integer.parseInt(st.nextToken());
-				al[x].add(new road(y, dis));
-				al[y].add(new road(x, dis));
+				al[x].add(new road(y, dis, 0));
+				al[y].add(new road(x, dis, 0));
 				//pq.add(new road(x, y, dis));
 			}
 			long ans = 0;
-			pq.add(new road(1, 0));
+			pq.add(new road(1, 0, 0));
 			while(!pq.is_empty()) {
 				int cnt = 0;
 				for(int i=1;i<=N;i++) {
@@ -142,16 +150,18 @@ public class Solution3947_2 {
 				}
 				if(cnt == 0) break;
 				int x = pq.pq[0].x;
+				int sum = pq.pq[0].sum;
 				int dis = pq.poll().dis;
+				
 				if(parents[x] != -1) continue;
-				parents[x] = dis;
+				parents[x] = sum;
 				//System.out.println(x+" "+dis);
 				
-				ans +=dis;
+				ans +=sum;
 				for(int i=0;i<al[x].now;i++) {
 					if( parents[al[x].get(i).x] ==-1) {
 						
-						pq.add(new road(al[x].get(i).x, al[x].get(i).dis));
+						pq.add(new road(al[x].get(i).x, al[x].get(i).dis+parents[x], al[x].get(i).dis));
 						
 					}
 				}
