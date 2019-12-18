@@ -8,14 +8,15 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Solution4007 {
+	
 	static priorityQueue pq;
 	static ArrayList<pair> al[] = new ArrayList[50001];
 	static ArrayList<pair> al2[] = new ArrayList[50001];
 	//static ArrayList al[] = new ArrayList[50001];
 	//static ArrayList al2[] = new ArrayList[50001];
 	static boolean is_visit[] = new boolean[50001];
-	static int dismap[] = new int[50001];
-	static int dismap2[] = new int[50001];
+	static long dismap[] = new long[50001];
+	static long dismap2[] = new long[50001];
 	
 	static class priorityQueue{
 		pair pq[];
@@ -60,8 +61,8 @@ public class Solution4007 {
 	}
 	static class pair{
 		int go;
-		int dis;
-		public pair(int go, int dis) {
+		long dis;
+		public pair(int go, long dis) {
 			super();
 			this.go = go;
 			this.dis = dis;
@@ -126,8 +127,8 @@ public class Solution4007 {
 				al2[i] = new ArrayList<pair>();
 				//al[i].now=0;
 				//al2[i].now=0;
-				dismap[i] = 987654321;
-				dismap2[i] = 987654321;
+				dismap[i] = 500000000;
+				dismap2[i] = 500000000;
 			}
 			for(int i=0;i<M;i++) {
 				st = new StringTokenizer(br.readLine());
@@ -145,47 +146,47 @@ public class Solution4007 {
 			while(pq.now != 0) {
 				//int s = pq.pq[0].s;
 				int e = pq.pq[0].go;
-				int dis = pq.poll().dis;
+				long dis = pq.poll().dis;
 				if(is_visit[e]) continue;
 				is_visit[e] = true;
 				
 				for(int i=0;i<al[e].size();i++) {
 					int go = al[e].get(i).go;
-					int godis = al[e].get(i).dis;
+					long godis = al[e].get(i).dis;
 					if(dismap[go] > dismap[e]+godis) {
 						dismap[go] = dismap[e]+godis;
-						pq.add(new pair(go, godis));
+						pq.add(new pair(go, dismap[go]));
 					}
 				}
-				
 			}
 
 			
 			for(int i=1;i<=N;i++) {
 				is_visit[i] = false;
 			}
+			pq.now = 0;
 			pq.add(new pair(X, 0));
 			dismap2[X] = 0;
 			while(pq.now != 0) {
 				//int s = pq.pq[0].s;
 				int e = pq.pq[0].go;
-				int dis = pq.poll().dis;
+				long dis = pq.poll().dis;
 				if(is_visit[e]) continue;
-				is_visit[e] = true;
-				
+				is_visit[e] = true;				
 				for(int i=0;i<al2[e].size();i++) {
 					int go = al2[e].get(i).go;
-					int godis = al2[e].get(i).dis;
+					long godis = al2[e].get(i).dis;
 					if(dismap2[go] > dismap2[e]+godis) {
 						dismap2[go] = dismap2[e]+godis;
-						pq.add(new pair(go, godis));
+						pq.add(new pair(go, dismap2[go]));
 					}
 				}
 	
 			}
 
-			int x = 0;
+			long x = 0;
 			for(int i=1;i<=N;i++) {
+				if(i == X) continue;
 				dismap[i] += dismap2[i];
 				if(dismap[i] > x) x = dismap[i];
 			}
