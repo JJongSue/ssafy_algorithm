@@ -1,36 +1,39 @@
 package boj;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 public class Main1181 {
-	static class node{
-		int next[] = new int[26];
-		boolean print;
-		public node() {
-			for(int i=0;i<26;i++) next[i] = -1;
-			print = false;
-		}
-		
-	}
-	static class trie{
-		node node[] = new node[100000];
-		int root;
-		int now;
-		public trie() {
-			root = 0;
-			now = 1;
-			node[0] = new node();
-		}
-		void add(int next, int snext, String str) {
-			if(snext == str.length()) {
-				node[next].print = true;
-				return;
+	static PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+
+		@Override
+		public int compare(String o1, String o2) {
+			if(o1.length() == o2.length()) {
+				return o1.compareTo(o2);
 			}
-			int 
+			return o1.length()-o2.length();
 		}
-		
-		
-	}
-	
-	public static void main(String[] args) {
+	});
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());		
+		for(int i=0;i<N;i++) {
+			String tmp = br.readLine();
+			pq.add(tmp);
+		}
+		String last = "";
+		while(!pq.isEmpty()) {
+			String tmp = pq.poll();
+			if(!last.equals(tmp)) {				
+				System.out.println(tmp);
+				last = tmp;
+			}
+		}
 		
 	}
 }
+
