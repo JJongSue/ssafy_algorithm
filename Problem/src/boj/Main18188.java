@@ -81,8 +81,9 @@ public class Main18188 {
 					is_end = true;
 					break end;
 				}
-				if(is_map(xx, yy) && map[yy][xx] == '.' || map[yy][xx] == 'D') {
-					q.add(new pair(xx, yy, tmp+first));
+				//System.out.println(xx+" "+yy);
+				if(is_map(xx, yy) && (map[yy][xx] == '.' || map[yy][xx] == 'D')) {
+					q.add(new pair(xx, yy, tmp+firsttmp));
 				}
 				
 				xx = x+dx[second];
@@ -92,8 +93,8 @@ public class Main18188 {
 					is_end = true;
 					break end;
 				}
-				if(is_map(xx, yy) && map[yy][xx] == '.' || map[yy][xx] == 'D') {
-					q.add(new pair(xx, yy, tmp+second));
+				if(is_map(xx, yy) && (map[yy][xx] == '.' || map[yy][xx] == 'D')) {
+					q.add(new pair(xx, yy, tmp+secondtmp));
 				}
 				
 			}
