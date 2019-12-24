@@ -35,7 +35,7 @@ public class Main9202 {
 		}
 	}
 	static class trie{
-		Node node[] = new Node[100000];
+		Node node[] = new Node[1000000];
 		int now;
 		int root;
 		public trie() {
@@ -68,6 +68,8 @@ public class Main9202 {
 				if(node[go].next[i] != -1) {
 					char c = (char) (i+'A');
 					get(node[go].next[i], s+c);
+					cnttmp++;
+					
 				}
 			}
 		}
@@ -109,6 +111,7 @@ public class Main9202 {
 			for(int j=0;j<4;j++) {
 				if(map[i][j] == s.charAt(0)) {
 					is_visit = new boolean[4][4];
+					is_visit[i][j] = true;
 					boolean tmp = dfs(j,i,s,1);
 					if(tmp) {
 						count++;
@@ -118,7 +121,7 @@ public class Main9202 {
 						else if(sl==6 ) score+=3;
 						else if(sl==7 ) score+=5;
 						else if(sl==8 ) score+=11;
-						if(ans.length() < s.length()) ans= s;
+						if(ans.length() < sl || ans.equals("")) ans= s;
 						return;
 					}
 				}
