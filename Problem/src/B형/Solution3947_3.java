@@ -110,15 +110,18 @@ public class Solution3947_3 {
 		public ArrayList(Node pair) {
 			super();
 			this.pair = pair;
-			this.now = now;
+			this.now = 0;
 		}
 		void add(dot x) {
 			if(now == 0) {
-				tmp[idx] = new Node(x, null);
+				tmp[idx].pair = x;
+				tmp[idx].next = null;
 				pair = tmp[idx];
 				idx++;
 			}else {
-				tmp[idx] = new Node(x, pair);
+				//tmp[idx] = new Node(x, pair);
+				tmp[idx].pair = x;
+				tmp[idx].next = pair;
 				pair = tmp[idx];
 				idx++;
 			}
@@ -177,7 +180,7 @@ public class Solution3947_3 {
 			al[i] = new ArrayList();
 			//al[i].now = 0;
 		}
-		for(int i=1;i<1000001;i++) {
+		for(int i=0;i<1000001;i++) {
 			
 			tmp[i] = new Node();
 			//al[i].now = 0;
@@ -229,9 +232,9 @@ public class Solution3947_3 {
 				ans +=sum;
 				Node tmp1 = al[x].pair;
 				while(tmp1 != null) {
-					System.out.println(al[x].pair.pair.x+"되는겨");
-					if(parents[al[x].pair.pair.x] == -1) {						
-						pq.add(new road(al[x].pair.pair.x, parents[al[x].pair.pair.x]+al[x].pair.pair.dis,al[x].pair.pair.dis));
+					//System.out.println(al[x].pair.pair.x+"되는겨");
+					if(parents[tmp1.pair.x] == -1) {						
+						pq.add(new road(tmp1.pair.x, parents[x]+tmp1.pair.dis,tmp1.pair.dis));
 					}
 					tmp1 = tmp1.next;
 				}
