@@ -1,4 +1,4 @@
-package B형;
+package boj;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +12,7 @@ public class Main4195 {
 		if(parents[x] < 0) return x;
 		return parents[x] = find_set(parents[x]);
 	}
+	static int hash_now = 500_001;
 	
 	static class hash{
 		String key;
@@ -32,28 +33,30 @@ public class Main4195 {
 	}
 	
 	static long set_hash(String key, long hash, int now) {
-		hash = hash % 1000003;
+		//hash = hash % 1000003;
 		if(ht[(int) hash] == null) {
-			ht[(int) hash] = new hash(key, (int)hash);
+			ht[(int) hash] = new hash(key, -1);
 			return hash;
 		}
 		if(ht[(int) hash].key.equals(key)) {
 			return hash;
 		}
-		while(true) {
-			hash = (hash+1)%1000003;
-			if(ht[(int) hash] == null) {
-				ht[(int) hash] = new hash(key, (int)hash);
-				return hash;
+		int tmpnow = ht[(int)hash].value;
+		int post = (int)hash;
+		while(tmpnow != -1) {
+			if(ht[post].key.equals(key)) {
+				return post;
 			}
-			if(ht[(int) hash].key.equals(key)) {
-				return hash;
-			}
-			
-			
-			
+			post = tmpnow;
+			tmpnow = ht[post].value;
 		}
-		
+		if(ht[post].key.equals(key)) {
+			return post;
+		}
+		ht[post].value = hash_now;
+		ht[hash_now] = new hash(key, -1);
+		hash_now++;
+		return hash_now-1;
 		//return hash;
 		
 		//return hash;
@@ -67,10 +70,10 @@ public class Main4195 {
 		for(int i=0;i<str.length();i++) {
 			//hash = (hash << 5) + hash + str.charAt(i);
 			//hash = (((hash << 5) + hash)+str.charAt(i) ) % 1000003;
-			hash = (hash * h + (str.charAt(i)-'A')) % 1000003 ;
+			hash = (hash * h + (str.charAt(i)-'A')) % 500_001 ;
 		}
 		if(hash < 0 ) hash *= -1;
-		hash = hash % 1000003;
+		hash = hash % 500_001;
 		return  hash;
 	}
 	
@@ -95,10 +98,10 @@ public class Main4195 {
 				int hy = (int) set_hash(str2, y, 0);
 				//System.out.println(x + " " + y);
 				union(hx, hy);
-				System.out.println(parents[find_set(x)] * (-1));
-				//sb.append(parents[find_set(x)]*(-1)).append("\n");
+				//System.out.println(parents[find_set(x)] * (-1));
+				sb.append(parents[find_set(hx)]*(-1)).append("\n");
 			}
-			//System.out.print(sb);
+			System.out.print(sb);
 		}
 		
 		
