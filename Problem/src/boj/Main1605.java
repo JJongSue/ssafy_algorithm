@@ -20,6 +20,8 @@ public class Main1605 {
 			this.key = key;
 		}
 	}
+	
+	
 	static boolean set_hash(String key, int hash) {
 		if(ht[hash] == null) {
 			ht[hash] = new hash(-1, key);
