@@ -22,7 +22,7 @@ public class Main12015 {
 		}
 		@Override
 		public int compareTo(pair o) {
-			if(this.cnt == o.cnt) return o.num-this.num;
+			if(this.cnt == o.cnt) return this.num-o.num;
 			return o.cnt-this.cnt;
 		}
 		
