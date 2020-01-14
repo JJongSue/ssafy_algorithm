@@ -11,6 +11,7 @@ public class Main14444 {
 		if(l>r) return;
 		int mid = (l+r) / 2;
 		if(ans > mid) return;
+		System.out.println(l+" "+r);
 		long h1 = 0;
 		long h2 = 0;
 		boolean is_ok = false;
@@ -37,7 +38,7 @@ public class Main14444 {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		str = br.readLine();
-		int l = 0, r = str.length();
+		int l = 1, r = str.length();
 		//int ans = 0;
 		binary_Search(l, r);
 		System.out.println(ans);
