@@ -3,56 +3,53 @@ package boj;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main12015 {
-	static PriorityQueue<pair> pq = new PriorityQueue<>();
-	static Queue<pair> q = new LinkedList<>();
-	static boolean is_visit[];
-	static class pair implements Comparable<pair>{
-		int num;
-		int cnt;
-		public pair(int num, int cnt) {
-			super();
-			this.num = num;
-			this.cnt = cnt;
-		}
-		@Override
-		public int compareTo(pair o) {
-			if(this.cnt == o.cnt) return this.num-o.num;
-			return o.cnt-this.cnt;
-		}
-		
-	}
+	static int N;
+	static int map[], D[], cnt[];
+	static int ans = 1;
+	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine());
-		is_visit = new boolean[1000001];
+		
+		N = Integer.parseInt(br.readLine());
+		map = new int[N];
+		D = new int[N+1];
+		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i=0;i<N;i++) {
-			int tmp = Integer.parseInt(st.nextToken());
-			//System.out.println(tmp);
-			if(!is_visit[tmp]) {
-				is_visit[tmp] = true;
-				boolean end = false;
-				while(!pq.isEmpty()) {
-					if(pq.peek().num < tmp) {
-						pq.add(new pair(tmp, pq.peek().cnt+1));
-						end = true;
-						break;
-					}else {
-						q.add(pq.poll());
-					}
-				}
-				if(!end) pq.add(new pair(tmp, 1));
-				while(!q.isEmpty()) pq.add(q.poll());
+			map[i] = Integer.parseInt(st.nextToken());
+			D[i] = 1_000_001;
+		}
+		D[N] = 1_000_001;
+		D[0] = 0;
+		D[1] = map[0];
+		int right = 1;
+		for(int i=1;i<N;i++) {
+			int tmp = bs(0, right, map[i]);
+			if(right < tmp) right = tmp;
+			D[tmp] = map[i];
+			ans = Math.max(ans, tmp);
+		}
+		System.out.println(ans);
+		
+		
+		
+	}
+	
+	static int bs(int left, int right, int now) {
+		int l = left;
+		int r = right;
+		while(l<=r) {
+			int mid = (l+r)/2;
+			if(now <= D[mid]) {
+				r = mid-1;
+			}else {
+				l = mid+1;
 			}
 		}
-		System.out.println(pq.peek().cnt);
-		
+		return l;
 	}
 
 }

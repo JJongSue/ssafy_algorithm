@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 public class Main12014 {
 	static int T, N, map[], K;
 	static StringBuilder sb = new StringBuilder();
-	static int ans = 0;
+	static int ans = 1;
 	static int D[] = new int[10_001], cnt[],left, right;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
@@ -17,7 +17,7 @@ public class Main12014 {
 		T = Integer.parseInt(br.readLine());
 		for(int tc=1;tc<=T;tc++) {
 			sb.append("Case #").append(tc).append("\n");
-			ans = 0;
+			ans = 1;
 			left = 0;
 			right=1;
 			for(int i=1;i<10_001;i++) D[i] = 10_001;
@@ -76,12 +76,14 @@ public class Main12014 {
 	static void lis(int now) {
 		for(int i=1;i<N;i++) {
 			int tmp = bs(map[i]);
-			if(tmp+1 > right) right = tmp+1;
-			D[tmp+1] = map[i];
-			System.out.println(tmp);
+			if(tmp > right) right = tmp;
+			D[tmp] = map[i];
+			//System.out.println(tmp);
+			//for(int k=0;k<10;k++) System.out.print(D[k]+ " ");
+			//System.out.println();
 			//System.out.println(Arrays.toString(D));
-			cnt[i] = tmp+1;
-			ans = Math.max(ans, tmp+1);
+			cnt[i] = tmp;
+			ans = Math.max(ans, tmp);
 			if(ans == K) return;
 			
 		}
