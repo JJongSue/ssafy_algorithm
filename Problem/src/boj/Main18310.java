@@ -3,6 +3,7 @@ package boj;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main18310 {
@@ -22,62 +23,21 @@ public class Main18310 {
 		
 		for(int i=0;i<N;i++) {
 			map[i] = Integer.parseInt(st.nextToken());
-			l = Math.min(l, map[i]);
-			r = Math.max(r, map[i]);
 		}
-		if(l == r) ans = l;
-		while(l<=r) {
-			//if(ans < l) break;
-			int mid = (l+r)/2;
-			//System.out.println("L : " + l + " R : "+ r+" mid : "+mid);
-			lsum=0;
-			rsum=0;
-			msum=0;
+		Arrays.sort(map);
+		if(N%2 == 0) {
+			int sum1=0, sum2=0;
+			int mid = N/2-1;
+			int mid2 = N/2;
 			for(int i=0;i<N;i++) {
-				lsum += (Math.abs(map[i]-l));
-				rsum += (Math.abs(map[i]-r));
-				msum += (Math.abs(map[i]-mid));
+				sum1 += Math.abs(map[i] - map[mid]);
+				sum2 += Math.abs(map[i] - map[mid2]);
 			}
-			if(rsum < lsum) {
-				if(msum <= rsum) {
-					if(msum < ans_sum) {
-						ans_sum = msum;
-						ans = mid;
-					}else if(msum == ans_sum && mid < ans) {
-						ans = mid;
-					}
-				}else {
-					if(rsum < ans_sum) {
-						ans = r;
-						ans_sum = rsum;
-					}else if(rsum == ans_sum && r < ans) {
-						ans = r;
-					}
-				}
-				l = mid+1;
-				
-				
-			}else {
-				if(msum < lsum) {
-					if(msum < ans_sum) {
-						ans_sum = msum;
-						ans = mid;
-					}else if(msum == ans_sum && mid < ans) {
-						ans = mid;
-					}
-				}else {
-					if(lsum < ans_sum) {
-						ans = l;
-						ans_sum = lsum;
-					}else if(lsum == ans_sum && l < ans) {
-						ans = l;
-					}
-				}
-				r= mid-1;
-			}
-			
+			if(sum1 <= sum2) System.out.println(map[mid]);
+			else System.out.println(map[mid2]);
+		}else {
+			System.out.println(map[N/2]);
 		}
-		System.out.println(ans);
 		
 		
 	}
