@@ -1,226 +1,62 @@
-import java.io.*;
-import java.util.*;
- 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
 public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
-        StringTokenizer st = null;
-        StringBuilder sb = new StringBuilder();
-        for (int tc = 1; tc <= T; tc++) {
-            st = new StringTokenizer(br.readLine());
-            int N = Integer.parseInt(st.nextToken());
-            String command = st.nextToken();
-            int[][] map = new int[N][N];
-            for (int r = 0; r < N; r++) {
-                st = new StringTokenizer(br.readLine());
-                for (int c = 0; c < N; c++) {
-                    map[r][c] = Integer.parseInt(st.nextToken());
-                }
-            }
-            Queue<Integer> helper = new LinkedList<Integer>();
-            switch (command) {
-            case "up":
-                // 빈공간 압축!
-                for (int r = 0; r < N; r++) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = r + 1; s < N; s++) {
-                                if (map[s][c] != 0) {
-                                    helper.add(map[s][c]);
-                                    map[s][c] = 0;
-                                }
-                            }
-                            int s = r - 1;
-                            while (!helper.isEmpty()) {
-                                s++;
-                                map[s][c] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                // 맨 위에껀 안볼꺼지롱
-                // 2048 ㄱ
-                for (int r = 1; r < N; r++) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r - 1][c] == map[r][c]) {
-                            map[r - 1][c] *= 2;
-                            map[r][c] = 0;
-                        }
-                    }
-                }
-                // 빈공간 압축!
-                for (int r = 0; r < N; r++) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = r + 1; s < N; s++) {
-                                if (map[s][c] != 0) {
-                                    helper.add(map[s][c]);
-                                    map[s][c] = 0;
-                                }
-                            }
-                            int s = r - 1;
-                            while (!helper.isEmpty()) {
-                                s++;
-                                map[s][c] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "down":
-                // 빈공간 압축!
-                for (int r = N-1; r >= 0; r--) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = r-1; s >= 0; s--) {
-                                if (map[s][c] != 0) {
-                                    helper.add(map[s][c]);
-                                    map[s][c] = 0;
-                                }
-                            }
-                            int s = r + 1;
-                            while (!helper.isEmpty()) {
-                                s--;
-                                map[s][c] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                // 2048 ㄱ
-                for (int r = N-2; r >=0; r--) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r + 1][c] == map[r][c]) {
-                            map[r + 1][c] *= 2;
-                            map[r][c] = 0;
-                        }
-                    }
-                }
-                //공간 압축 ㄱ
-                for (int r = N-1; r >= 0; r--) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = r-1; s >= 0; s--) {
-                                if (map[s][c] != 0) {
-                                    helper.add(map[s][c]);
-                                    map[s][c] = 0;
-                                }
-                            }
-                            int s = r + 1;
-                            while (!helper.isEmpty()) {
-                                s--;
-                                map[s][c] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "left":
-                // 빈공간 압축!
-                for (int r = 0; r <N; r++) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = c+1; s< N; s++) {
-                                if (map[r][s] != 0) {
-                                    helper.add(map[r][s]);
-                                    map[r][s] = 0;
-                                }
-                            }
-                            int s = c - 1;
-                            while (!helper.isEmpty()) {
-                                s++;
-                                map[r][s] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                // 2048 ㄱ
-                for (int r = 0; r < N; r++) {
-                    for (int c = 0; c < N-1; c++) {
-                        if (map[r][c+1] == map[r][c]) {
-                            map[r][c] *= 2;
-                            map[r][c+1] = 0;
-                        }
-                    }
-                }
-                //공간 압축 ㄱ
-                for (int r = 0; r <N; r++) {
-                    for (int c = 0; c < N; c++) {
-                        if (map[r][c] == 0) {
-                            for (int s = c+1; s< N; s++) {
-                                if (map[r][s] != 0) {
-                                    helper.add(map[r][s]);
-                                    map[r][s] = 0;
-                                }
-                            }
-                            int s = c - 1;
-                            while (!helper.isEmpty()) {
-                                s++;
-                                map[r][s] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                break;
-            case "right":
-                // 빈공간 압축!
-                for (int r = 0; r <N; r++) {
-                    for (int c = N-1; c > 0; c--) {
-                        if (map[r][c] == 0) {
-                            for (int s = c-1; s>=0; s--) {
-                                if (map[r][s] != 0) {
-                                    helper.add(map[r][s]);
-                                    map[r][s] = 0;
-                                }
-                            }
-                            int s = c + 1;
-                            while (!helper.isEmpty()) {
-                                s--;
-                                map[r][s] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                 
-                // 2048 ㄱ
-                for (int r = 0; r < N; r++) {
-                    for (int c = N-1; c >0; c--) {
-                        if (map[r][c-1] == map[r][c]) {
-                            map[r][c] *= 2;
-                            map[r][c-1] = 0;
-                        }
-                    }
-                }
-                //공간 압축 ㄱ
-                for (int r = 0; r <N; r++) {
-                    for (int c = N-1; c > 0; c--) {
-                        if (map[r][c] == 0) {
-                            for (int s = c-1; s>=0; s--) {
-                                if (map[r][s] != 0) {
-                                    helper.add(map[r][s]);
-                                    map[r][s] = 0;
-                                }
-                            }
-                            int s = c + 1;
-                            while (!helper.isEmpty()) {
-                                s--;
-                                map[r][s] = helper.poll();
-                            }
-                        }
-                    }
-                }
-                break;
-            }//switch 끝
-            sb.append("#").append(tc).append('\n');
-            for (int r = 0; r < N; r++) {
-                for (int c = 0; c < N; c++) {
-                    sb.append(map[r][c]).append(" ");
-                }
-                sb.append('\n');
-            }
- 
-        }//tc 끝
-        System.out.print(sb.toString());
+	static class pair implements Comparable<pair>{
+		int s;
+		int e;
+		public pair(int s, int e) {
+			super();
+			this.s = s;
+			this.e = e;
+		}
+		@Override
+		public int compareTo(pair o) {
+			// TODO Auto-generated method stub
+			if(o.e == this.e){
+				return o.s-this.s;
+			}
+			return this.e - o.e;
+		}
+		
+	}
+	
+	static public int solution(int[][] routes) {
+        int answer = 0;
+        pair pm[] = new pair[routes.length];
+        for(int i=0;i<routes.length;i++) {
+        	pm[i] = new pair(routes[i][0], routes[i][1]);
+        }
+        Arrays.sort(pm);
+        answer++;
+        int max = pm[0].e;
+        
+        for(int i=1;i<routes.length;i++) {
+        	//System.out.println(pm[i].s + " " + pm[i].e+" "+max);
+        	if( pm[i].s <= max && pm[i].e >= max) continue;
+        	answer++;
+        	max = pm[i].e;
+        }
+        
+        
+        return answer;
     }
- 
+	
+	
+	public static void main(String[] args) {
+		//int puddles[][] = {{2,2}};
+		int routes[][] = {{-20,15},{-14,-5},{-18,-13},{-5,-3}};
+		System.out.println(solution(routes));
+	}
+	
+	
+	
+
 }

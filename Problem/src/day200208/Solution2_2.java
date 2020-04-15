@@ -1,6 +1,7 @@
 package day200208;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -9,7 +10,7 @@ import java.util.TreeSet;
 public class Solution2_2 {
 	static PriorityQueue<String> pq = new PriorityQueue<String>();
 	static HashMap<String, Integer> hm = new HashMap<String, Integer>();
-	static Set<String> ts[] = new Set[200_001];
+	static Set<String> ts[] = new HashSet[200_001];
 	static int max = 0;
 	static int cntmap[] = new int[200_001];
 	static int now = 0;
@@ -25,7 +26,7 @@ public class Solution2_2 {
         	//System.out.println(name);
         	if(!hm.containsKey(name)) {
         		hm.put(name, now);
-        		ts[now] = new Set<String>();
+        		ts[now] = new HashSet<String>();
         		now++;
         	}
         	int tmpnow = hm.get(name);
@@ -66,8 +67,7 @@ public class Solution2_2 {
         return answer;
     }
 	public static void main(String[] args) {
-		String strs[] = {"alex pizza pasta", "alex pizza pizza", "alex noodle", "bob pasta",
-				"bob noodle sandwich pasta", "bob steak noodle"};
+		String strs[] = {"alex pizza pasta", "alex pizza pizza", "alex noodle", "bob pasta", "bob noodle sandwich pasta", "bob steak noodle"};
 		String ans[] = solution(strs);
 		for(int i=0;i<ans.length;i++) {
 			System.out.println(ans[i]);
