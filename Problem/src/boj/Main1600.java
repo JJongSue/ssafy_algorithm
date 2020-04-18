@@ -86,7 +86,8 @@ public class Main1600 {
 			
 			time++;
 		}
-		System.out.println(ans);
+		if(N == 1 && M == 1) System.out.println(0);
+		else System.out.println(ans);
 		
 	}
 	static boolean is_map(int x, int y) {

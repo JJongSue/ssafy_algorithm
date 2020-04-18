@@ -12,42 +12,37 @@ public class Main10942 {
 		int arr[] = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i=0;i<N;i++) arr[i] = Integer.parseInt(st.nextToken());
-		boolean map[][] = new boolean[N][N];
-		for(int i=0;i<N;i++) {
-			for(int j=i;j<N;j++) {
-				if(arr[i] == arr[j]) map[i][j] = true;
-				//System.out.print((map[i][j] ? 1 : 0) + " ");
-			}
-			//System.out.println();
-		}
-		//System.out.println();
 		
-		int M = Integer.parseInt(br.readLine());
+		boolean dp[][] = new boolean[N][N];
+		
+		int M = Integer.parseInt(br.readLine()); 
+		subPalin(arr, dp, N);
+		StringBuilder sb = new StringBuilder();
+		
 		for(int i=0;i<M;i++) {
-			
 			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken())-1;
-			int b = Integer.parseInt(st.nextToken())-1;
-			//System.out.println(a+" "+b);
-			if(a == b) System.out.println(1);
-			else if(a>b) {
-				boolean is_ok = true;
-				int iter = 0;
-				while(a-iter >= (a+b)/2){
-					is_ok = is_ok&map[b+iter][a-iter];
-					iter++;
-				}
-				System.out.println(is_ok? 1:0);
-			}else {
-				boolean is_ok = true;
-				int iter = 0;
-				while(b-iter >= (a+b)/2){
-					is_ok = is_ok&map[a+iter][b-iter];
-					if(!is_ok) break;
-					iter++;
-				}
-				System.out.println(is_ok? 1:0);
+			int s = Integer.parseInt(st.nextToken())-1;
+			int e = Integer.parseInt(st.nextToken())-1;
+			sb.append(dp[s][e] ? "1\n" : "0\n");
+		}
+		System.out.println(sb);
+	}
+	
+	private static void subPalin(int arr[], boolean dp[][], int n) {
+		int i, j;
+		for(i=0;i<n;i++) {
+			for(j=i;j<n;j++) {
+				dp[j][i] = dp[i][j] = is_pal(arr, i, j);
 			}
 		}
+	}
+	static boolean is_pal(int arr[], int s, int e) {
+		if(s<e) {
+			int n = s+(e-s) / 2 + (e-s)%2;
+			while(s<=n) {
+				if(arr[s++] != arr[e--] ) return false;
+			}
+		}
+		return true;
 	}
 }
