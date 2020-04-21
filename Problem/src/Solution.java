@@ -1,62 +1,69 @@
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
 
 public class Solution {
-	static class pair implements Comparable<pair>{
-		int s;
-		int e;
-		public pair(int s, int e) {
-			super();
-			this.s = s;
-			this.e = e;
-		}
-		@Override
-		public int compareTo(pair o) {
-			// TODO Auto-generated method stub
-			if(o.e == this.e){
-				return o.s-this.s;
-			}
-			return this.e - o.e;
-		}
-		
-	}
-	
-	static public int solution(int[][] routes) {
-        int answer = 0;
-        pair pm[] = new pair[routes.length];
-        for(int i=0;i<routes.length;i++) {
-        	pm[i] = new pair(routes[i][0], routes[i][1]);
-        }
-        Arrays.sort(pm);
-        answer++;
-        int max = pm[0].e;
+	static int answer = 0;
+	static boolean is_visit[];
+	static ArrayList<Integer> al[];
+	static boolean map[] = new boolean[1<<9];
+	static public int solution(String[] user_id, String[] banned_id) {
         
-        for(int i=1;i<routes.length;i++) {
-        	//System.out.println(pm[i].s + " " + pm[i].e+" "+max);
-        	if( pm[i].s <= max && pm[i].e >= max) continue;
-        	answer++;
-        	max = pm[i].e;
+        if(user_id.length == banned_id.length) return 1;
+        is_visit = new boolean[user_id.length];
+        
+        al = new ArrayList[banned_id.length];
+        for(int i=0;i<banned_id.length;i++) {
+        	al[i] = new ArrayList<>();
+        	for(int j=0;j<user_id.length;j++) {
+        		if(user_id[j].length() == banned_id[i].length()) {
+        			boolean is_ok = true;
+        			for(int k=0;k<banned_id[i].length();k++) {
+//        				if(banned_id[i].charAt(k) == user_id[j].charAt(k) || banned_id[i].charAt(k) == '*') continue;
+        				if(banned_id[i].charAt(k) != user_id[j].charAt(k) && banned_id[i].charAt(k) != '*') {
+        					is_ok = false;
+        					break;
+        					
+        				}
+        			}
+        			if(is_ok) {
+        				System.out.println(banned_id[i] + " " + user_id[j]);
+        				al[i].add(j);
+        			}
+        		}
+        	}
+        	System.out.println(al[i].size());
         }
+        select(0, banned_id.length,0);
         
         
         return answer;
     }
-	
-	
-	public static void main(String[] args) {
-		//int puddles[][] = {{2,2}};
-		int routes[][] = {{-20,15},{-14,-5},{-18,-13},{-5,-3}};
-		System.out.println(solution(routes));
+	static void select(int now, int N, int dp) {
+		if(now == N) {
+//			System.out.println(Arrays.toString(d));
+			if(!map[dp]) {
+				
+				answer++;
+				map[dp] = true;
+			}
+			return;
+		}
+		for(int i=0;i<al[now].size();i++) {
+			if(!is_visit[al[now].get(i)]) {
+				is_visit[al[now].get(i)] = true;
+				select(now+1, N, (dp|(1<<al[now].get(i))));
+				is_visit[al[now].get(i)] = false;
+			}
+		}
+//		select(now+1, N, dp);
 	}
 	
+	public static void main(String[] args) {
+		String user_id[] = {"frodo", "fradi", "crodo", "abc123", "frodoc"};
+		String banned_id[] = {"*rodo", "*rodo", "******"};
+		System.out.println(solution(user_id, banned_id));
+		
 	
-	
+	}
 
 }
