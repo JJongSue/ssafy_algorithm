@@ -13,13 +13,15 @@ public class Main18427 {
 	static final int div_num = 10_007;
 	static ArrayList<Integer> al[];
 	static int N, M, H;
-	
+	static int min=1000, max=1;
+	static int map[][];
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		H = Integer.parseInt(st.nextToken());
+		map = new int[H+1][N];
 		
 		al = new ArrayList[N];
 		for(int i=0;i<N;i++) {
@@ -28,23 +30,43 @@ public class Main18427 {
 			int size = st.countTokens();
 			for(int j=0;j<size;j++) {
 				int tmp = Integer.parseInt(st.nextToken());
-				if(tmp < H) {
-					al[i].add(tmp);
-				}else if(tmp == H) {
-					ans++;
+				al[i].add(tmp);
+//				if(tmp <= H) {
+//					
+//				}else if(tmp == H) {
+//					ans++;
+//				}
+			}
+//			al[i].sort(new Comparator<Integer>() {
+//
+//				@Override
+//				public int compare(Integer o1, Integer o2) {
+//					// TODO Auto-generated method stub
+//					return o1-o2;
+//				}
+//			});
+		}
+		for(int i=0;i<al[0].size();i++) {
+//			System.out.println(i);
+			int tmp = al[0].get(i);
+			map[tmp][0] = 1;
+		}
+		map[0][0] = 1;
+		for(int i=1;i<N;i++) {
+			for(int j=0;j<=H;j++) {
+				if(map[j][i-1] == 0) continue;
+				map[j][i] = (map[j][i] + map[j][i-1]) % div_num;
+				for(int k=0;k<al[i].size();k++) {
+					if(j+al[i].get(k)<=H) map[j+al[i].get(k)][i] = (map[j][i-1] + map[j+al[i].get(k)][i]) % div_num;
 				}
 			}
-			al[i].sort(new Comparator<Integer>() {
-
-				@Override
-				public int compare(Integer o1, Integer o2) {
-					// TODO Auto-generated method stub
-					return o1-o2;
-				}
-			});
 		}
-		get_num(0, 0);
-		System.out.println(ans);
+//		for(int i=0;i<=H;i++) System.out.println(Arrays.toString(map[i]));
+		System.out.println(map[H][N-1]);
+		
+		
+//		get_num(0, 0);
+//		System.out.println(ans);
 		
 		
 		
