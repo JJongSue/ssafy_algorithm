@@ -20,6 +20,7 @@ public class Main11004 {
 		}
 		quicksort(0, arr.length-1);
 //		Arrays.sort(arr);
+		System.out.println(Arrays.toString(arr));
 		System.out.println(arr[K-1]);
 	}
 	
@@ -62,8 +63,8 @@ public class Main11004 {
 	    
 	   // partition과정을 통해 구한 구분점에 +1한 값과 k를 비교하여 해당하는 부분집합에 대해
        // 재귀호출을 반복한다.
-	    if(pi+1 == K) return;
-	    else if(pi+1<K)
+//	    if(pi+1 == K) return;
+	    if(pi+1<K)
 	    	quicksort(pi + 1, right);
 	    else
 	    	quicksort(left, pi - 1);
