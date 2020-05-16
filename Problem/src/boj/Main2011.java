@@ -6,103 +6,60 @@ import java.io.InputStreamReader;
 
 public class Main2011 {
 	static String tmp;
-	static int dp[][];
+	static int dp[];
+	static final int div = 1_000_000;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		tmp = br.readLine();
-		dp = new int[tmp.length()][2];
-		int start = tmp.length()-1;
-		if(tmp.charAt(0) == '0') {
-			System.out.println(0);
-		}
-		else if(tmp.length() == 1) {
+		if(tmp.length() == 1) {
 			if(tmp.charAt(0) == '0') System.out.println(0);
 			else System.out.println(1);
 		}else {
-			if(tmp.charAt(start) == '0' &&tmp.charAt(start-1) > '2') {
-				System.out.println(0);
-				return;
-			}
-			if(tmp.charAt(start) == '0' &&tmp.charAt(start-1) == '0') {
-				System.out.println(0);
-				return;
-			}
-			if(tmp.charAt(start-1) == '2' && tmp.charAt(start) <= '6' && tmp.charAt(start)> '0') {
-				System.out.println(tmp);
-				dp[start-1][1] = 1;
-				dp[start-1][0] = 1;
-				dp[start][1] = 0;
-				dp[start][0] = 1;
-				
-			}else if(tmp.charAt(start-1) == '2' && tmp.charAt(start) ==  '0') {
-				System.out.println("20");
-				dp[start-1][1] = 1;
-				dp[start-1][0] = 0;
-				dp[start][1] = 0;
-				dp[start][0] = 0;
-			}else if(tmp.charAt(start-1) == '2') {
-				dp[start-1][1] = 0;
-				dp[start-1][0] = 1;
-				dp[start][1] = 0;
-				dp[start][0] = 1;
-			}else if(tmp.charAt(start-1) == '1' && tmp.charAt(start) == '0') {
-				dp[start-1][0] = 0;
-				dp[start-1][1] = 1;
-			}
-			else if(tmp.charAt(start-1) == '1' && tmp.charAt(start) != '0') {
-				dp[start-1][1] = 1;
-				dp[start-1][0] = 1;
-				dp[start][1] = 0;
-				dp[start][0] = 1;
-			}
-			else if(tmp.charAt(start-1) == '0') {
-				
-				dp[start][0] = 1;
-			}
+			if(tmp.charAt(0) == '0') System.out.println(0);
 			else {
-				dp[start][0] = 1;
-				dp[start-1][0] = 1;
-			}
-//			if(tmp.charAt(start) == '0' && tmp.charAt(start-1) == '0') {
-//				System.out.println(0);
-//				return;
-//			}
-			start = start -2;
-			for(int i=start;i>=0;i--) {
-				char now = tmp.charAt(i);
-				if(now == '0' && tmp.charAt(i+1) == '0') {
-					dp[0][0] =0;
-					dp[0][1] = 0;
-					break;
-				}
-				if(now == '0') {
-					continue;
-				}
-				if(now == '1') {
-					dp[i][0] = (dp[i+1][1] + dp[i+1][0])%1000000;
-					dp[i][1] = (dp[i+2][0] + dp[i+2][1])%1000000;
-				}else if(now == '2') {
-					if(tmp.charAt(i+1) <= '6') {
-						dp[i][0] = (dp[i+1][1] + dp[i+1][0])%1000000;
-						dp[i][1] = (dp[i+2][0] + dp[i+2][1])%1000000;
-					}else {
-						dp[i][0] = (dp[i+1][1] + dp[i+1][0])%1000000;
-					}
+				dp = new int[tmp.length()];
+				if(tmp.charAt(1) == '0' && (tmp.charAt(0) == '1' || tmp.charAt(0) == '2')){
+					dp[0] = 1;
+					dp[1] = 1;
+				}else if(tmp.charAt(1) == '0' && (tmp.charAt(0) > '2') ){
+					dp[0] = 0;
+					dp[1] = 0;
+				}else if(tmp.charAt(0) == '1') {
+					dp[0] = 1;
+					dp[1] = 2;
+				}else if(tmp.charAt(0) == '2' && !(tmp.charAt(1) > '6')) {
+					dp[0] = 1;
+					dp[1] = 2;
 				}else {
-					dp[i][0] = (dp[i+1][1] + dp[i+1][0])%1000000;
+					dp[0] = 1;
+					dp[1] = 1;
 				}
 				
+				for(int i=2;i<tmp.length();i++) {
+					if(tmp.charAt(i) == '0') {
+						if(tmp.charAt(i-1) == '1' || tmp.charAt(i-1) == '2') {
+							dp[i] = dp[i-2];
+						}else {
+							break;
+						}
+					}else if(tmp.charAt(i-1) == '1') {
+						dp[i] = (dp[i-1] + dp[i-2])%div;
+					}else if(tmp.charAt(i-1) == '2' ) {
+						if(tmp.charAt(i) > '6') {
+							dp[i] = dp[i-1];
+						}else {
+							dp[i] = (dp[i-1] + dp[i-2])%div;
+						}
+					}else dp[i] = dp[i-1];
+				}
+				System.out.println(dp[tmp.length()-1]);
+				
 			}
-			int ans = (dp[0][0] + dp[0][1]) %1000000;
-			System.out.println(ans);
-			
 		}
 		
-//		for(int i=0;i<tmp.length();i++) {
-//			System.out.print(dp[i][0] + " ");
-//		}System.out.println();
-//		for(int i=0;i<tmp.length();i++) {
-//			System.out.print(dp[i][1] + " ");
-//		}System.out.println();
+		
+		
+		
+
 	}
 }
