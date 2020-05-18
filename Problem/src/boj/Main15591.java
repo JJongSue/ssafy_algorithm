@@ -64,7 +64,7 @@ public class Main15591 {
 				pq.add(new pair(now, dis));
 			}
 			
-			while(!pq.isEmpty()) {
+			while(!pq.isEmpty()) {ef
 				int now = pq.peek().e;
 				int dis = pq.poll().dis;
 				
