@@ -16,6 +16,7 @@ ans = r
 print(l,r)
 
 while l<=r:
+    
     mid = int((l + int((r-l)/2)))
     cnt = 0
     print(mid)
